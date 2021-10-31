@@ -2,14 +2,15 @@ import argparse
 import random
 import os
 import subprocess
-
+# 
 if __name__ == "__main__":
+    #command arguments to import runme files
     parser = argparse.ArgumentParser()
     parser.add_argument('--player_a_runme_file', help='Player A runme.txt')
     parser.add_argument('--player_b_runme_file', help='Player B runme.txt')
     parser.add_argument('--iterations', help='number of iterations in game')
     args = parser.parse_args()
-
+    #initialize players
     players = []
 
     with open(args.player_a_runme_file, "r") as f:
