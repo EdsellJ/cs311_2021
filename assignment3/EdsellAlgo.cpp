@@ -13,7 +13,7 @@ bool silent(string last5){
   1 = Confess
   */
   int charpos = 0;
-  //finite automota implemented with switch
+  //finite state automota implemented with switch
   while (last5[charpos] != '\0')
   {
     if (state == 0){
@@ -24,7 +24,7 @@ bool silent(string last5){
         default: return false;
       }
     }
-    if (state == 1){
+    else if (state == 1){
       switch (last5[charpos]){
         //confess -> confess
         case 'c': state = 1; break;
@@ -36,57 +36,63 @@ bool silent(string last5){
     charpos++;
   }
   //where did I end up?
-  if (state == 0) 
+  if (state == 0){
     return true;
+  }
   else return false;
 }
 
-ifstream fin; //global stream for reading from the input file
-ofstream fout;
-
+fstream fs; //global stream for reading from the input file
 
 void addToFile(string lastMove){
   char moveToAdd;
   string last5;
-  fin >> last5;
-  if (lastMove == "silent") moveToAdd = 's';
-  else if (lastMove == "confess") moveToAdd = 'c';
-  //else return;
+  fs >> last5;
+
+  //add last opponent move to text file
+  if (lastMove == "silent") last5 += 's';
+  else if (lastMove == "confess") last5 = 'c';
   
-  //add choice to string
-  //cout << "before: " << last5 << endl;
-  last5 += moveToAdd;
-  //cout << "after: " << last5 << endl;
   //if is larger than size 5 remove first
-  //if (last5.length() >= 6) last5.erase(0,1);
+  if (last5.length() >= 6) last5.erase(0,1);
 
   //add new string to file
-  fout << last5;
+  fs.close();
+  fs.open("last5.txt", ios::in | ios::out | ios::trunc); //delete old content
+  fs << last5;
 }
 
 string choice(string l5){
-  if(silent(l5)) return "silent";
+  if(silent(l5) == true) return "silent";
   else return "confess";
 }
 
 int main(int argc, char** argv)
 {
-  fin.open("last5.txt");
-  fout.open("last5.txt");
-
+  //if not the first turn
   if(strcmp(argv[1], "--last_opponent_move") == 0){
+    //open file
+    fs.open("last5.txt");
 
     //add their choice to my move history file
     addToFile(argv[2]);
+
+    //reset file input
+    fs.close();
+    fs.open("last5.txt");
+
+    //make choice
     string last5;
-    fin >> last5;
+    fs >> last5;
     cout << choice(last5);
   }
-  //if first start with confess
-  else cout << "confess";
 
-  fin.close();
-  fout.close();
+  //if first start with confess
+  else if (strcmp(argv[2], "true") == 0){
+    fs.open("last5.txt", ios::in | ios::out | ios::trunc);
+    cout << "confess";
+  }
+  fs.close();
   
-    return 0;
+  return 0;
 }
