@@ -46,7 +46,6 @@ bool silent(string last5){
 fstream fs; //global stream for reading from the input file
 
 void addToFile(string lastMove){
-  char moveToAdd;
   string last5;
   fs >> last5;
 
@@ -55,6 +54,7 @@ void addToFile(string lastMove){
   else if (lastMove == "confess") last5 = 'c';
   
   //if is larger than size 5 remove first
+  //this essentially creates a queue of size 5 in my text file
   if (last5.length() >= 6) last5.erase(0,1);
 
   //add new string to file
