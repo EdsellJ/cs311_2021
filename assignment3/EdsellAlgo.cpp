@@ -88,9 +88,9 @@ int main(int argc, char** argv)
     cout << choice(last5);
   }
 
-  //if first start with confess
+  //if --init true start with confess
   else if (strcmp(argv[2], "true") == 0){
-    fs.open("last5.txt", ios::in | ios::out | ios::trunc);
+    fs.open("last5.txt", ios::in | ios::out | ios::trunc); //trunc option to clear text file
     cout << "confess";
   }
   fs.close();
