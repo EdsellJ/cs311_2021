@@ -5,6 +5,7 @@
 
 using namespace std;
   
+//this is my logic function which makes the decisions
 bool silent(string last5){
   int state = 0;
   /*
